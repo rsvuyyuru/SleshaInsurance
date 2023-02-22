@@ -21,7 +21,7 @@ export class HomeComponent implements OnInit {
           this.router.navigateByUrl('/userHome')
       }
     })
-    let x=new Date(2023,0,1);
+    let x=new Date(2023,2,2);
     this.offerLeft=Math.ceil((x.getTime()-this.now.getTime())/(1000 * 3600 *24))+' Days';
   }
 
