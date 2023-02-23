@@ -30,6 +30,8 @@ public class UserService {
                 .findAll()
                 .stream()
                 .map(
+                    x->{x.setPhone("+1"+ x.getPhone()); return x;})
+                .map(
                     x->{x.setPassword("");
                         return x;})
                 .collect(Collectors.toList());
