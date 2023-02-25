@@ -2,6 +2,8 @@ package com.slesha.planms.controller;
 
 import java.util.List;
 import java.util.Optional;
+import java.time.LocalDate;
+import java.time.Month;
 
 import com.slesha.planms.dto.EnrollRequest;
 import com.slesha.planms.entity.InsurancePlan;
@@ -39,8 +41,21 @@ public class InsurancePlanController {
 
     @GetMapping
     public ResponseEntity<List<InsurancePlan>> getPlans(){
-        return new ResponseEntity<>(service.getPlans(),HttpStatus.OK);
+        List<InsurancePlan> plans = service.getPlans();
+        for(InsurancePlan plan: plans){
+            if (LocalDate.now().getMonth() == Month.FEBRUARY) {
+                //System.out.println(plan.getAveragePremium()+" intial");
+                Double newAverage = plan.getAveragePremium()*0.9;
+                //System.out.println("changes "+ newAverage);
+                Double newMaximum = plan.getMaximumCoverage()*1.1;
+                plan.setAveragePremium((int)Math.round(newAverage));
+                plan.setMaximumCoverage((int)Math.round(newMaximum));
+                //System.out.println(plan.getAveragePremium());
+            }
+        }
+        return new ResponseEntity<>(plans,HttpStatus.OK);
     }
+    
     @GetMapping("/{id}")
     public ResponseEntity<InsurancePlan> getPlan(@PathVariable Integer id){
         Optional<InsurancePlan> data=service.getPlan(id);
